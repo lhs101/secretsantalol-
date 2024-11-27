@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Name Picker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .name-display {
+            font-size: 32px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Random Name Picker</h1>
+    <button onclick="pickRandomName()">Pick a Random Name</button>
+    <div class="name-display" id="random-name"></div>
+</div>
+
+<script>
+// List of names
+const names = ["Annabel", "Cherrie", "Lizzy", "Julia", "Rebecca", "Magdalena", "Sophia", "Aiden", "Lilly"];
+
+// Function to pick a random name
+function pickRandomName() {
+    // Get previously selected names from localStorage (if any)
+    let usedNames = JSON.parse(localStorage.getItem("usedNames")) || [];
+
+    // Filter out used names
+    let availableNames = names.filter(name => !usedNames.includes(name));
+
+    if (availableNames.length === 0) {
+        // If all names have been picked, reset the usedNames array
+        alert("All names have been picked. Resetting the list.");
+        usedNames = [];
+        localStorage.removeItem("usedNames");  // Clear storage
+        availableNames = names;  // Reset available names
+    }
+
+    // Pick a random name from the available names
+    const randomIndex = Math.floor(Math.random() * availableNames.length);
+    const selectedName = availableNames[randomIndex];
+
+    // Display the selected name
+    document.getElementById("random-name").innerText = selectedName;
+
+    // Add the selected name to the used names list and store it in localStorage
+    usedNames.push(selectedName);
+    localStorage.setItem("usedNames", JSON.stringify(usedNames));
+}
+</script>
+
+</body>
+</html>
